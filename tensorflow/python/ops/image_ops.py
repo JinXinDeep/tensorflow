@@ -18,7 +18,7 @@
 
 TensorFlow provides Ops to decode and encode JPEG and PNG formats.  Encoded
 images are represented by scalar string Tensors, decoded images by 3-D uint8
-tensors of shape `[height, width, channels]`.
+tensors of shape `[height, width, channels]`. (PNG also supports uint16.)
 
 The encode and decode Ops apply to one image at a time.  Their input and output
 are all of variable size.  If you need fixed size images, pass the output of
@@ -540,8 +540,7 @@ def resize_images(images,
     new_width: integer.
     method: ResizeMethod.  Defaults to `ResizeMethod.BILINEAR`.
     align_corners: bool. If true, exactly align all 4 cornets of the input and
-                   output. Defaults to `false`. Only implemented for bilinear
-                   interpolation method so far.
+                   output. Defaults to `false`.
 
   Raises:
     ValueError: if the shape of `images` is incompatible with the
@@ -574,12 +573,17 @@ def resize_images(images,
                                            [new_height, new_width],
                                            align_corners=align_corners)
   elif method == ResizeMethod.NEAREST_NEIGHBOR:
-    images = gen_image_ops.resize_nearest_neighbor(images, [new_height,
-                                                            new_width])
+    images = gen_image_ops.resize_nearest_neighbor(images,
+                                                   [new_height, new_width],
+                                                   align_corners=align_corners)
   elif method == ResizeMethod.BICUBIC:
-    images = gen_image_ops.resize_bicubic(images, [new_height, new_width])
+    images = gen_image_ops.resize_bicubic(images,
+                                          [new_height, new_width],
+                                          align_corners=align_corners)
   elif method == ResizeMethod.AREA:
-    images = gen_image_ops.resize_area(images, [new_height, new_width])
+    images = gen_image_ops.resize_area(images,
+                                       [new_height, new_width],
+                                       align_corners=align_corners)
   else:
     raise ValueError('Resize method is not implemented.')
 

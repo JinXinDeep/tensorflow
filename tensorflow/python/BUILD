@@ -263,22 +263,17 @@ tf_gen_op_wrapper_py(
 py_library(
     name = "functional_ops_lib",
     srcs = ["ops/functional_ops.py"],
+    srcs_version = "PY2AND3",
     deps = [
         ":functional_ops",
     ],
 )
 
-py_test(
+cuda_py_tests(
     name = "framework_function_test",
     srcs = ["framework/function_test.py"],
-    main = "framework/function_test.py",
-    srcs_version = "PY2AND3",
-    deps = [
-        ":framework_test_lib",
+    additional_deps = [
         ":functional_ops_lib",
-        ":platform_test",
-        "//tensorflow:tensorflow_py",
-        "//tensorflow/core:protos_all_py",
     ],
 )
 
@@ -492,6 +487,7 @@ tf_gen_op_wrapper_py(
         "TensorArrayGrad",
         "TensorArrayRead",
         "TensorArrayPack",
+        "TensorArraySize",
         "TensorArrayUnpack",
         "TensorArrayWrite",
     ],
@@ -582,6 +578,7 @@ tf_gen_op_wrapper_py(
         "AvgPoolGrad",  # "*Grad" accessible through nn_grad instead of nn_ops.
         "BatchNormWithGlobalNormalizationGrad",
         "SoftmaxCrossEntropyWithLogits",
+        "SparseSoftmaxCrossEntropyWithLogits",
         "LRNGrad",
         "MaxPoolGrad",
         "MaxPoolGradWithArgmax",
@@ -713,6 +710,7 @@ py_library(
         "ops/gen_string_ops.py",
         "ops/gen_summary_ops.py",
         "ops/gradients.py",
+        "ops/histogram_ops.py",
         "ops/image_grad.py",
         "ops/image_ops.py",
         "ops/init_ops.py",
@@ -741,6 +739,8 @@ py_library(
         "ops/string_ops.py",
         "ops/summary_ops.py",
         "ops/template.py",
+        "ops/tensor_array_grad.py",
+        "ops/tensor_array_ops.py",
         "ops/variable_scope.py",
         "ops/variables.py",
         "user_ops/user_ops.py",
@@ -972,6 +972,7 @@ cpu_only_kernel_test_list = glob([
     "kernel_tests/clip_ops_test.py",
     "kernel_tests/decode_csv_op_test.py",
     "kernel_tests/decode_raw_op_test.py",
+    "kernel_tests/depthtospace_op_test.py",
     "kernel_tests/determinant_op_test.py",
     "kernel_tests/diag_op_test.py",
     "kernel_tests/edit_distance_op_test.py",
@@ -986,6 +987,7 @@ cpu_only_kernel_test_list = glob([
     "kernel_tests/matrix_inverse_op_test.py",
     "kernel_tests/matrix_solve_op_test.py",
     "kernel_tests/matrix_triangular_solve_op_test.py",
+    "kernel_tests/matrix_solve_ls_op_test.py",
     "kernel_tests/mutex_ops_test.py",
     "kernel_tests/parsing_ops_test.py",
     "kernel_tests/queue_ops_test.py",
@@ -999,6 +1001,7 @@ cpu_only_kernel_test_list = glob([
     "kernel_tests/sparse_reorder_op_test.py",
     "kernel_tests/sparse_to_dense_op_test.py",
     "kernel_tests/sparsemask_op_test.py",
+    "kernel_tests/spacetodepth_op_test.py",
     "kernel_tests/summary_ops_test.py",
     "kernel_tests/template_test.py",
     "kernel_tests/topk_op_test.py",
